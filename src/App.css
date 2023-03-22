@@ -1,0 +1,111 @@
+#root {
+  margin: 0;
+  text-align: center;
+}
+
+nav {
+  top: 0;
+  width: 100%;
+}
+
+.barra {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1rem;
+}
+
+.card {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 5rem;
+  border-radius: 1rem;
+  background-color: #1a1a1a;
+}
+
+.card label {
+  width: 100%;
+  text-align: start;
+}
+
+.card input {
+  width: 100%;
+}
+
+.container {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: start;
+  justify-content: space-evenly;
+}
+
+.poblacion {
+  position: relative;
+  padding: 1.5rem;
+  background-color: #58bc82;
+  border-radius: 1rem;
+  width: 50rem;
+  height: 25rem;
+}
+
+.btn {
+  padding: 1rem;
+  border-radius: 100rem;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-icon {
+  width: 1.5rem;
+  color: ghostwhite;
+}
+
+.btn_agregar {
+  background-color: #646cff;
+}
+
+.btn_eliminar {
+  background-color: #f9303a;
+}
+
+.btn_reiniciar {
+  background-color: #ba2c73;
+}
+
+.rutas {
+  width: 50rem;
+  height: 25rem;
+}
+
+.rutaTexto {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border-radius: 1rem;
+}
+.rutaTexto h4 {
+  padding: 0;
+  background-color: #58bc82;
+  line-height: 0;
+  color: ghostwhite;
+}
+
+.ciudadTexto {
+  padding: 0;
+  margin: 0;
+  font-weight: 200;
+  color: ghostwhite;
+}
