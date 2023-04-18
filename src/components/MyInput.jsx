@@ -7,6 +7,7 @@ export const MyInput = ({
   handleOnChange,
   value,
   step = 1,
+  disabled = false,
 }) => {
   return (
     <div className="card">
@@ -18,6 +19,7 @@ export const MyInput = ({
         onChange={handleOnChange}
         value={value}
         step={step}
+        disabled={disabled}
       />
     </div>
   );

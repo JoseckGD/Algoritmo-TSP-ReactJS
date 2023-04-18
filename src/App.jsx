@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Ciudad } from "./components/Ciudad";
 
@@ -7,141 +7,351 @@ import eliminar from "./assets/eliminar.svg";
 import reiniciar from "./assets/reiniciar.svg";
 import { MyInput } from "./components/MyInput";
 import { Loader } from "./components/Loader";
+import "react-tooltip/dist/react-tooltip.css";
+import { MySelect } from "./components/MySelect";
 
-// const initialPoblacion = [
-//   {
-//     ciudad: 1,
-//     coordenadas: { x: 20, y: 20 },
-//   },
-//   {
-//     ciudad: 2,
-//     coordenadas: { x: 300, y: 100 },
-//   },
-//   {
-//     ciudad: 3,
-//     coordenadas: { x: 123, y: 123 },
-//   },
-//   {
-//     ciudad: 4,
-//     coordenadas: { x: 385, y: 362 },
-//   },
-//   {
-//     ciudad: 5,
-//     coordenadas: { x: 258, y: 277 },
-//   },
-//   {
-//     ciudad: 6,
-//     coordenadas: { x: 486, y: 58 },
-//   },
-//   {
-//     ciudad: 7,
-//     coordenadas: { x: 114, y: 90 },
-//   },
-//   {
-//     ciudad: 8,
-//     coordenadas: { x: 20, y: 71 },
-//   },
-//   {
-//     ciudad: 9,
-//     coordenadas: { x: 186, y: 311 },
-//   },
-//   {
-//     ciudad: 10,
-//     coordenadas: { x: 212, y: 400 },
-//   },
-// ];
+let aeropuertos = [
+  {
+    ciudad: "MEX",
+    aeropuerto: "Aeropuerto Internacional de la Ciudad de México",
+    coordenadas: {
+      latitud: 19.4363,
+      longitud: -99.0721,
+      x: 402,
+      y: 254,
+    },
+  },
+  {
+    ciudad: "CUN",
+    aeropuerto: "Aeropuerto Internacional de Cancún",
+    coordenadas: {
+      latitud: 21.0405,
+      longitud: -86.874,
+      x: 1000,
+      y: 54,
+    },
+  },
+  {
+    ciudad: "GDL",
+    aeropuerto: "Aeropuerto Internacional de Guadalajara",
+    coordenadas: {
+      latitud: 20.5255,
+      longitud: -103.3076,
+      x: 12,
+      y: 361,
+    },
+  },
+  {
+    ciudad: "MTY",
+    aeropuerto: "Aeropuerto Internacional de Monterrey",
+    coordenadas: {
+      latitud: 25.7785,
+      longitud: -100.1068,
+      x: 347,
+      y: 74,
+    },
+  },
+  {
+    ciudad: "TIJ",
+    aeropuerto: "Aeropuerto Internacional de Tijuana",
+    coordenadas: {
+      latitud: 32.5411,
+      longitud: -116.9709,
+      x: 9,
+      y: 614,
+    },
+  },
+  {
+    ciudad: "PVR",
+    aeropuerto: "Aeropuerto Internacional de Puerto Vallarta",
+    coordenadas: {
+      latitud: 20.6801,
+      longitud: -105.2542,
+      x: 89,
+      y: 280,
+    },
+  },
+  {
+    ciudad: "MID",
+    aeropuerto: "Aeropuerto Internacional de Mérida",
+    coordenadas: {
+      latitud: 20.9374,
+      longitud: -89.6574,
+      x: 600,
+      y: 491,
+    },
+  },
+  {
+    ciudad: "SJD",
+    aeropuerto: "Aeropuerto Internacional de Los Cabos",
+    coordenadas: {
+      latitud: 23.1518,
+      longitud: -109.7214,
+      x: 61,
+      y: 82,
+    },
+  },
+  {
+    ciudad: "VER",
+    aeropuerto: "Aeropuerto Internacional de Veracruz",
+    coordenadas: {
+      latitud: 19.1445,
+      longitud: -96.1875,
+      x: 505,
+      y: 311,
+    },
+  },
+  {
+    ciudad: "OAX",
+    aeropuerto: "Aeropuerto Internacional de Oaxaca",
+    coordenadas: {
+      latitud: 16.9996,
+      longitud: -96.7266,
+      x: 497,
+      y: 637,
+    },
+  },
+  {
+    ciudad: "HMO",
+    aeropuerto: "Aeropuerto Internacional de Hermosillo",
+    coordenadas: {
+      latitud: 29.0958,
+      longitud: -111.047,
+      x: 80,
+      y: 173,
+    },
+  },
+  {
+    ciudad: "CJS",
+    aeropuerto: "Aeropuerto Internacional Abraham González",
+    coordenadas: {
+      latitud: 31.6361,
+      longitud: -106.4267,
+      x: 156,
+      y: 432,
+    },
+  },
+  {
+    ciudad: "CUL",
+    aeropuerto: "Aeropuerto Internacional Federal de Culiacán",
+    coordenadas: {
+      latitud: 24.7645,
+      longitud: -107.4745,
+      x: 119,
+      y: 209,
+    },
+  },
+  {
+    ciudad: "TAM",
+    aeropuerto: "Aeropuerto Internacional General Francisco Javier Mina",
+    coordenadas: {
+      latitud: 22.2964,
+      longitud: -97.8659,
+      x: 594,
+      y: 155,
+    },
+  },
+  {
+    ciudad: "LAP",
+    aeropuerto: "Aeropuerto Internacional Manuel Márquez de León",
+    coordenadas: {
+      latitud: 24.076,
+      longitud: -110.3637,
+      x: 46,
+      y: 78,
+    },
+  },
+  {
+    ciudad: "PBC",
+    aeropuerto: "Aeropuerto Internacional de Puebla",
+    coordenadas: {
+      latitud: 19.1585,
+      longitud: -98.3714,
+      x: 439,
+      y: 314,
+    },
+  },
+  {
+    ciudad: "ZIH",
+    aeropuerto: "Aeropuerto Internacional de Ixtapa-Zihuatanejo",
+    coordenadas: {
+      latitud: 17.6037,
+      longitud: -101.4627,
+      x: 49,
+      y: 209,
+    },
+  },
+  {
+    ciudad: "BJX",
+    aeropuerto: "Aeropuerto Internacional de Guanajuato",
+    coordenadas: {
+      latitud: 20.9935,
+      longitud: -101.4806,
+      x: 26,
+      y: 309,
+    },
+  },
+  {
+    ciudad: "ACA",
+    aeropuerto: "Aeropuerto Internacional de Acapulco",
+    coordenadas: {
+      latitud: 16.7569,
+      longitud: -99.7534,
+      x: 407,
+      y: 495,
+    },
+  },
+  //Aeropuerto Internacional de Torreón (TRC): 25.5685° N, 103.4101° W
 
-const initialPoblacion = [
   {
-    ciudad: 1,
+    ciudad: "TRC",
+    aeropuerto: "Aeropuerto Internacional de Torreón",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      latitud: 25.5614,
+      longitud: -103.4101,
+      x: 40,
+      y: 45,
+    },
+  },
+];
+const initialAeropuertos = [
+  {
+    ciudad: "MEX",
+    aeropuerto: "Aeropuerto Internacional de la Ciudad de México",
+    coordenadas: {
+      x: 479,
+      y: 108,
     },
   },
   {
-    ciudad: 2,
+    ciudad: "CUN",
+    aeropuerto: "Aeropuerto Internacional de Cancún",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 796,
+      y: 143,
     },
   },
   {
-    ciudad: 3,
+    ciudad: "GDL",
+    aeropuerto: "Aeropuerto Internacional de Guadalajara",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 369,
+      y: 132,
     },
   },
   {
-    ciudad: 4,
+    ciudad: "MTY",
+    aeropuerto: "Aeropuerto Internacional de Monterrey",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 452,
+      y: 247,
     },
   },
   {
-    ciudad: 5,
+    ciudad: "TIJ",
+    aeropuerto: "Aeropuerto Internacional de Tijuana",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 13,
+      y: 396,
     },
   },
   {
-    ciudad: 6,
+    ciudad: "PVR",
+    aeropuerto: "Aeropuerto Internacional de Puerto Vallarta",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 318,
+      y: 135,
     },
   },
   {
-    ciudad: 7,
+    ciudad: "SJD",
+    aeropuerto: "Aeropuerto Internacional de Los Cabos",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 202,
+      y: 190,
     },
   },
   {
-    ciudad: 8,
+    ciudad: "MID",
+    aeropuerto: "Aeropuerto Internacional de Mérida",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 723,
+      y: 141,
     },
   },
   {
-    ciudad: 9,
+    ciudad: "VER",
+    aeropuerto: "Aeropuerto Internacional de Veracruz",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 554,
+      y: 101,
     },
   },
   {
-    ciudad: 10,
+    ciudad: "OAX",
+    aeropuerto: "Aeropuerto Internacional de Oaxaca",
     coordenadas: {
-      x: Math.floor(Math.random() * 801),
-      y: Math.floor(Math.random() * 401),
+      x: 540,
+      y: 54,
     },
   },
 ];
 
 function App() {
-  const [poblacion, setPoblacion] = useState(initialPoblacion);
-  const [ciudadInicio, setCiudadInicio] = useState(5);
+  const [poblacion, setPoblacion] = useState(initialAeropuertos);
+  const [ciudadInicio, setCiudadInicio] = useState(0);
   const [iteraciones, setIteraciones] = useState(100000);
   const [Pc, setPc] = useState(0.75);
   const [Pm, setPm] = useState(0.001);
 
   const [mejoresRutas, setMejoresRutas] = useState([]);
   const [rutaTexto, setRutaTexto] = useState(null);
+  const [distanciaMejorRuta, setDistanciaMejorRuta] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [porcentaje, setPorcentaje] = useState(0);
+
   const canvasRef = useRef(null);
+
+  useEffect(() => {
+    //    Obtener cordenas x,y
+    // console.log(transformarCoordenadas(aeropuertos));
+    setPoblacion(transformarCoordenadas(aeropuertos));
+    aeropuertos = transformarCoordenadas(aeropuertos);
+  }, []);
+
+  function transformarCoordenadas(aeropuertos) {
+    const LON_MIN = -117.488392;
+    const LON_MAX = -86.708214;
+    const LAT_MIN = 14.540151;
+    const LAT_MAX = 32.718576;
+
+    const ANCHO = 800;
+    const ALTO = 400;
+
+    aeropuertos.forEach((aeropuerto) => {
+      const x = Math.round(
+        ((aeropuerto.coordenadas.longitud - LON_MIN) / (LON_MAX - LON_MIN)) *
+          ANCHO
+      );
+      const y = Math.round(
+        (1 - (aeropuerto.coordenadas.latitud - LAT_MIN) / (LAT_MAX - LAT_MIN)) *
+          ALTO
+      );
+      aeropuerto.coordenadas.x = x;
+      aeropuerto.coordenadas.y = ALTO - y;
+
+      // console.log(aeropuerto.coordenadas.x, aeropuerto.coordenadas.y);
+    });
+
+    return aeropuertos;
+  }
 
   const getCoordenadasCiudad = (ciudad) => {
     let x = 0,
       y = 0;
     for (let j = 0; j < poblacion.length; j++) {
-      if (poblacion[j].ciudad === ciudad) {
+      if (j + 1 === ciudad) {
         x = poblacion[j].coordenadas.x;
         y = poblacion[j].coordenadas.y;
       }
@@ -163,7 +373,6 @@ function App() {
     const height = canvas.height;
     ctx.clearRect(0, 0, width, height);
     ctx.lineWidth = 5;
-
     let x1 = 0,
       x2 = 0,
       y1 = 0,
@@ -192,6 +401,16 @@ function App() {
   };
 
   const Calcular = async () => {
+    if (ciudadInicio === 0) {
+      alert("Selecciona un aeropuerto para empezar");
+      return;
+    }
+    setPorcentaje(0);
+    setDistanciaMejorRuta("");
+
+    const porcentajeIteraciones = Math.floor(iteraciones / 100);
+    let countActual = porcentajeIteraciones;
+
     setRutaTexto("");
     setIsLoading(true);
 
@@ -226,9 +445,12 @@ function App() {
       }
     }
 
-    // console.log(valoresRutaInicial);
+    // console.log("Inicialización de la población", valoresRutaInicial);
 
     let fitnes = Fitnes(rutas);
+
+    // console.log("Fitnes", fitnes);
+
     let count = 0,
       parent1 = [],
       parent2 = [],
@@ -239,9 +461,26 @@ function App() {
       Parents__offSprings = [],
       best1 = [],
       best2 = [],
-      mutacion = false;
+      mutacion = true;
+
+    let mejorRuta = [],
+      mejorRutaAeropuerto = [],
+      dibujar = [];
+
+    // parent1_id = SeleccionTorneo(fitnes);
+    // parent2_id = SeleccionTorneo(fitnes);
+
+    // parent1 = rutas[parent1_id];
+    // parent2 = rutas[parent2_id];
+
+    // console.log("Ruta del padre 1: " + parent1);
+    // console.log("Ruta del padre 2: " + parent2);
 
     while (count < iteraciones) {
+      if (count === countActual) {
+        setPorcentaje((porcentaje) => porcentaje + 1);
+        countActual += porcentajeIteraciones;
+      }
       Parents__offSprings = [];
 
       parent1_id = SeleccionTorneo(fitnes);
@@ -292,20 +531,31 @@ function App() {
 
       if (mutacion) {
         await new Promise((resolve) => setTimeout(resolve, 50));
-        let dibujar = Fitnes(rutas);
+        dibujar = Fitnes(rutas);
         dibujarRuta(rutas[dibujar.indexOf(Math.min(...dibujar))], canvas);
         mutacion = false;
       }
       count++;
     }
 
-    let dibujar = Fitnes(rutas);
+    dibujar = Fitnes(rutas);
     // console.log(rutas[dibujar.indexOf(Math.min(...dibujar))]);
     await new Promise((resolve) => setTimeout(resolve, 50));
-    dibujarRuta(rutas[dibujar.indexOf(Math.min(...dibujar))], canvas);
+    mejorRuta = rutas[dibujar.indexOf(Math.min(...dibujar))];
+    mejorRutaAeropuerto = [];
 
-    setRutaTexto(rutas[dibujar.indexOf(Math.min(...dibujar))]);
+    dibujarRuta(mejorRuta, canvas);
+
+    console.log(mejorRuta);
+
+    mejorRuta.map((el) => {
+      mejorRutaAeropuerto.push(poblacion[el - 1].ciudad);
+    });
+
+    setMejoresRutas(rutas);
+    setRutaTexto(mejorRutaAeropuerto);
     setIsLoading(false);
+    setDistanciaMejorRuta(Math.min(...dibujar).toFixed(3));
   };
 
   const Mejores_2_Parents__0ffSpring = (Parents_0ffSpring) => {
@@ -342,6 +592,8 @@ function App() {
 
     for (let i = 0; i < ciudadades; i++) {
       for (let j = 0; j < rutas[i].length; j++) {
+        //Checar si ya llego al final de la ruta
+        //Calcular la distanica de la ultima ciudad a la ciudad de incio
         if (j === rutas[i].length - 1) {
           num1 = rutas[i][j];
           num2 = rutas[i][0];
@@ -442,8 +694,10 @@ function App() {
     par.push(fitnes[seleccion1]);
     par.push(fitnes[seleccion2]);
 
+    // console.log("Seleccion torneo (2 opciones): ");
     // console.log(seleccion1, seleccion2);
-    // console.log(Math.min(...par));
+    // console.log("Fitnes de los selecionados: " + par);
+    // console.log("Gano: " + fitnes.indexOf(Math.min(...par)));
 
     return fitnes.indexOf(Math.min(...par));
   };
@@ -480,18 +734,21 @@ function App() {
   };
 
   const reiniciarPoblacion = () => {
-    setPoblacion(initialPoblacion);
+    setMejoresRutas([]);
+    setDistanciaMejorRuta("");
+    setPoblacion(aeropuertos);
     setRutaTexto("");
     borrarRuta();
-    setCiudadInicio(5);
+    setCiudadInicio(0);
+    setIteraciones(100000);
   };
 
   const handleInputEmpezarCiudad = (event) => {
     const { value } = event.target;
 
-    if (value.length === 0 || (value <= poblacion.length && value > 0)) {
-      setCiudadInicio(parseInt(value));
-    }
+    //    if (value.length === 0 || (value <= poblacion.length && value > 0)) {
+    setCiudadInicio(parseInt(value));
+    //  }
   };
 
   const handleInputIteraciones = (event) => {
@@ -530,14 +787,15 @@ function App() {
             placeholder="Numero de Iteraciones"
             handleOnChange={handleInputIteraciones}
             value={iteraciones}
+            disabled={isLoading === true ? true : false}
           />
 
-          <MyInput
-            titulo="Empezar por la ciudad"
-            type="number"
-            placeholder="Numero de la ciudad"
-            handleOnChange={handleInputEmpezarCiudad}
+          <MySelect
+            titulo="Empezar por el aeropuerto"
+            data={poblacion}
             value={ciudadInicio}
+            handleOnChange={handleInputEmpezarCiudad}
+            disabled={isLoading === true ? true : false}
           />
 
           <MyInput
@@ -547,6 +805,7 @@ function App() {
             handleOnChange={handleInputPc}
             value={Pc}
             step={0.01}
+            disabled={isLoading === true ? true : false}
           />
 
           <MyInput
@@ -556,6 +815,7 @@ function App() {
             handleOnChange={handleInputPm}
             value={Pm}
             step={0.001}
+            disabled={isLoading === true ? true : false}
           />
 
           <div className="card">
@@ -579,8 +839,8 @@ function App() {
 
       <div className="container">
         <div className="rutaTexto">
-          <h4>Ruta mas corta:</h4>
-          {isLoading && <Loader />}
+          <h4>Mejor ruta:</h4>
+          {isLoading && <Loader porcentaje={porcentaje} />}
           {rutaTexto &&
             rutaTexto.map((ciudad) => (
               <h3 className="ciudadTexto" key={ciudad}>
@@ -589,18 +849,28 @@ function App() {
             ))}
         </div>
         <div className="poblacion">
-          <canvas className="rutas" ref={canvasRef} width={800} height={400} />
+          <img src="/mapa.png" alt="mapa" width={800} height={400} />
+
+          <canvas
+            className="rutas"
+            ref={canvasRef}
+            width={800}
+            height={400}
+            style={{ position: "absolute", left: 16 }}
+          ></canvas>
           {poblacion.map((el, index) => (
             <Ciudad
               ciudad={el.ciudad}
+              aeropuerto={el.aeropuerto}
               coordenadas={el.coordenadas}
               ciudadInicio={ciudadInicio}
+              numero={index + 1}
               key={index + 1}
             />
           ))}
         </div>
         <div className="btn-card">
-          <button
+          {/* <button
             className="btn btn_agregar"
             type="button"
             onClick={() => agregarCiudad()}
@@ -616,7 +886,7 @@ function App() {
             disabled={isLoading}
           >
             <img src={eliminar} className="btn-icon" alt="React logo" />
-          </button>
+          </button> */}
 
           <button
             className="btn btn_reiniciar"
@@ -626,6 +896,11 @@ function App() {
           >
             <img src={reiniciar} className="btn-icon" alt="React logo" />
           </button>
+
+          <div className="distanciaRutaTexto">
+            <h4>Distancia de la mejor ruta:</h4>
+            {distanciaMejorRuta.length !== 0 && distanciaMejorRuta + "px"}
+          </div>
         </div>
       </div>
     </>
