@@ -214,6 +214,110 @@ let aeropuertos = [
     },
   },
 ];
+
+let aeropuertos_10 = [
+  {
+    ciudad: "MEX",
+    aeropuerto: "Aeropuerto Internacional de la Ciudad de México",
+    coordenadas: {
+      latitud: 19.4363,
+      longitud: -99.0721,
+      x: 402,
+      y: 254,
+    },
+  },
+  {
+    ciudad: "CUN",
+    aeropuerto: "Aeropuerto Internacional de Cancún",
+    coordenadas: {
+      latitud: 21.0405,
+      longitud: -86.874,
+      x: 1000,
+      y: 54,
+    },
+  },
+  {
+    ciudad: "GDL",
+    aeropuerto: "Aeropuerto Internacional de Guadalajara",
+    coordenadas: {
+      latitud: 20.5255,
+      longitud: -103.3076,
+      x: 12,
+      y: 361,
+    },
+  },
+  {
+    ciudad: "MTY",
+    aeropuerto: "Aeropuerto Internacional de Monterrey",
+    coordenadas: {
+      latitud: 25.7785,
+      longitud: -100.1068,
+      x: 347,
+      y: 74,
+    },
+  },
+  {
+    ciudad: "TIJ",
+    aeropuerto: "Aeropuerto Internacional de Tijuana",
+    coordenadas: {
+      latitud: 32.5411,
+      longitud: -116.9709,
+      x: 9,
+      y: 614,
+    },
+  },
+  {
+    ciudad: "PVR",
+    aeropuerto: "Aeropuerto Internacional de Puerto Vallarta",
+    coordenadas: {
+      latitud: 20.6801,
+      longitud: -105.2542,
+      x: 89,
+      y: 280,
+    },
+  },
+  {
+    ciudad: "MID",
+    aeropuerto: "Aeropuerto Internacional de Mérida",
+    coordenadas: {
+      latitud: 20.9374,
+      longitud: -89.6574,
+      x: 600,
+      y: 491,
+    },
+  },
+  {
+    ciudad: "SJD",
+    aeropuerto: "Aeropuerto Internacional de Los Cabos",
+    coordenadas: {
+      latitud: 23.1518,
+      longitud: -109.7214,
+      x: 61,
+      y: 82,
+    },
+  },
+  {
+    ciudad: "VER",
+    aeropuerto: "Aeropuerto Internacional de Veracruz",
+    coordenadas: {
+      latitud: 19.1445,
+      longitud: -96.1875,
+      x: 505,
+      y: 311,
+    },
+  },
+  {
+    ciudad: "OAX",
+    aeropuerto: "Aeropuerto Internacional de Oaxaca",
+    coordenadas: {
+      latitud: 16.9996,
+      longitud: -96.7266,
+      x: 497,
+      y: 637,
+    },
+  },
+];
+
 const initialAeropuertos = [
   {
     ciudad: "MEX",
@@ -302,7 +406,7 @@ function App() {
   const [ciudadInicio, setCiudadInicio] = useState(0);
   const [iteraciones, setIteraciones] = useState(100000);
   const [Pc, setPc] = useState(0.75);
-  const [Pm, setPm] = useState(0.001);
+  const [Pm, setPm] = useState(0.01);
 
   const [mejoresRutas, setMejoresRutas] = useState([]);
   const [rutaTexto, setRutaTexto] = useState(null);
@@ -316,8 +420,12 @@ function App() {
   useEffect(() => {
     //    Obtener cordenas x,y
     // console.log(transformarCoordenadas(aeropuertos));
+
     setPoblacion(transformarCoordenadas(aeropuertos));
     aeropuertos = transformarCoordenadas(aeropuertos);
+
+    // setPoblacion(transformarCoordenadas(aeropuertos_10));
+    // aeropuertos_10 = transformarCoordenadas(aeropuertos_10);
   }, []);
 
   function transformarCoordenadas(aeropuertos) {
@@ -748,6 +856,7 @@ function App() {
 
     //    if (value.length === 0 || (value <= poblacion.length && value > 0)) {
     setCiudadInicio(parseInt(value));
+    setMejoresRutas([]);
     //  }
   };
 
@@ -778,7 +887,7 @@ function App() {
   return (
     <>
       <nav>
-        <h1>El Problema del Agente viajero</h1>
+        <h1>El Problema del Agente Viajero</h1>
 
         <div className="barra">
           <MyInput
